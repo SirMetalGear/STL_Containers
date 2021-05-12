@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 12:12:54 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/12 12:46:40 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/13 01:57:51 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 void	example()
 {
@@ -631,8 +632,64 @@ void	testSortReal()
 	std::cout << '\n';
 }
 
+template <typename T>
+void	print(T &mylist, int flag = 0)
+{
+	if (flag == 0)
+		std::cout << "mine contains:";
+	else
+		std::cout << "real contains:";
+	for (ft::list<int>::iterator it = mylist.begin(); it!=mylist.end(); ++it)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
+
+	std::cout << "rev contains:";
+	for (ft::list<int>::iterator it = --mylist.end(); it!=mylist.begin(); --it)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
+}
+
+void	testMergeSortReal(int *start, int *end)
+{
+	std::list<int> mylist;
+	mylist.insert(mylist.end(), start, end);
+	mylist.sort();
+}
+
+void	testMergeSort(int *start, int *end)
+{
+	ft::list<int> mylist;
+	mylist.insert(mylist.end(), start, end);
+	mylist.sort();
+}
+
+void	superSortTest()
+{
+	int	size = 1000000;
+	int *val = new int[size];
+	for (int i = 0; i < size; i++)
+		val[i] = rand() % 1000;
+	std::cout << "Val is created! Size of val: " << size << std::endl;
+	struct timeval tp;
+	long start_microsec;
+
+	// gettimeofday(&tp, NULL);
+	// start_microsec = 1000000 * tp.tv_sec + tp.tv_usec;
+	// testMergeSortReal(val, val + size);
+	// gettimeofday(&tp, NULL);
+	// std::cout << "Standart sort:     " << (1000000 * tp.tv_sec + tp.tv_usec) - start_microsec << " microsecs has passed!\n";
+
+	gettimeofday(&tp, NULL);
+	start_microsec = 1000000 * tp.tv_sec + tp.tv_usec;
+	testMergeSort(val, val + size);
+	gettimeofday(&tp, NULL);
+	std::cout << "My supa dupa sort: " << (1000000 * tp.tv_sec + tp.tv_usec) - start_microsec << " microsecs has passed!\n";
+	delete [] val;
+}
+
 int	main()
 {
+	srand(time(NULL));
 	// example();
 	// testIterators();
 	// testFuncsReal();
@@ -656,8 +713,9 @@ int	main()
 	// testRemove_if();
 	// testResize();
 	// testReverse();
-	testSortReal();
-	testSort();
+	// testSortReal();
+	// testSort();
+	superSortTest();
 	// std::string		b[5] = {"1", "2", "3", "6", "7"};
 	// ft::list<std::string> a;
 	// a.insert(a.end(), b, b + 3);

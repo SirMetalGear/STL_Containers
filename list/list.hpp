@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 12:12:50 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/12 16:45:40 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/13 02:02:34 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <memory>
 # include <iostream>
 # include <numeric>
+# include <pthread>
 # include "./../utils/Node.hpp"
 # include "./../utils/const_iterator.hpp"
 
@@ -84,6 +85,109 @@ namespace ft
 			bool operator()(const _T1& __x, const _T1& __y) const {return __x < __y;}
 		};
 
+		template <typename S>
+		Node *merge(Node *a, Node *b, S comp) {
+			Node *tmp;
+			if (a == NULL)
+				return b;
+			if (b == NULL)
+				return a;
+			if (comp(a->_data, b->_data))
+			{
+				tmp = a;
+				a = a->_next;
+			}
+			else
+			{
+				tmp = b;
+				b = b->_next;
+			}
+			Node *head = tmp;
+			tmp->_prev = 0;
+			while (a && b)
+			{
+				if (comp(a->_data, b->_data))
+				{
+					tmp->_next = a;
+					a = a->_next;
+				}
+				else
+				{
+					tmp->_next = b;
+					b = b->_next;
+				}
+				tmp->_next->_prev = tmp;
+				tmp = tmp->_next;
+			}
+			if (a)
+			{
+				tmp->_next = a;
+				a->_prev = tmp;
+			}
+			if (b)
+			{
+				tmp->_next = b;
+				b->_prev = tmp;
+			}
+			return head;
+		}
+
+		void split(Node *src, Node **low, Node **high) {
+			Node *firstHalf = NULL;
+			Node *secondHalf = NULL;
+
+			if (src == NULL || src->_next == NULL)
+			{
+				(*low) = src;
+				(*high) = NULL;
+				return;
+			}
+			firstHalf = src;
+			secondHalf = src->_next;
+			while (secondHalf != NULL)
+			{
+				secondHalf = secondHalf->_next;
+				if (secondHalf != NULL)
+				{
+					secondHalf = secondHalf->_next;
+					firstHalf = firstHalf->_next;
+				}
+			}
+			*low = src;
+			*high = firstHalf->_next;
+			(*high)->_prev = NULL;
+			firstHalf->_next = NULL;
+		}
+
+		template <typename S>
+		void	merge_sort(Node **head, S comp)
+		{
+			Node *low = NULL;
+			Node *high = NULL;
+			if (*head == NULL || (*head)->_next == NULL)
+				return ;
+			split(*head, &low, &high);
+			// pthread_create(NULL, NULL, (void *)merge_sort, (void *)&low);
+			// pthread_create(NULL, NULL, (void *)merge_sort, (void *)&high);
+			merge_sort(&low, comp);
+			merge_sort(&high, comp);
+			*head = merge(low, high, comp);
+		}
+
+		template <typename S>
+		void	listSorted(S comp) {
+			Node *tmp = _key->_next;
+			tmp->_prev = 0;
+			_key->_prev->_next = 0;
+			merge_sort(&tmp, comp);
+			tmp->_prev = _key;
+			_key->_next = tmp;
+			while (tmp->_next != 0)
+				tmp = tmp->_next;
+			tmp->_next = _key;
+			_key->_prev = tmp;
+		}
+
 	public:
 		typedef base_iterator<T, Node>			iterator;
 		typedef	const_iterator<T, Node>			const_iterator;
@@ -146,8 +250,17 @@ namespace ft
 		}
 
 		void		clear() {
-			for (iterator it = begin(); it != end(); ++it)
-				delete_node(it.pointer);
+			Node *tmp = _key->_next;
+			Node *tmp2 = tmp;
+			while (tmp != _key)
+			{
+				tmp2 = tmp2->_next;
+				_nAlloc.deallocate(tmp, 1);
+				tmp = tmp2;
+				_size--;
+			}
+			_key->_next = _key;
+			_key->_prev = _key;
 		}
 
 		void		push_back(const T &ref) {
@@ -263,38 +376,10 @@ namespace ft
 			}
 		}
 
-		void	sort() {
-			sort(default_comp<value_type>());
-		}
 
-		template <class Compare>
-		void sort (Compare comp) {
-			iterator it = begin();
-			iterator ite = end();
-			iterator tmp;
-			while (it != ite)
-			{
-				tmp = it.pointer->_next;
-				if (tmp == ite)
-					break ;
-				if (comp(it.pointer->_data, tmp.pointer->_data))
-					++it;
-				else
-				{
-					ft::swap(it.pointer->_data, tmp.pointer->_data);
-					it.pointer->_next->_data = tmp.pointer->_data;
-					it = begin();
-				}
-			}
-		}
 
 		void merge(list &x) {
 			merge(x, default_comp<value_type>());
-		}
-
-		template <class Compare>
-		void mergeTwoLists(iterator start1, iterator end1, iterator start2, itertart end2, Compare comp) {
-			
 		}
 
 		template <class Compare>
@@ -334,6 +419,16 @@ namespace ft
 			x._key->_prev = x._key;
 			_size += x._size;
 			x._size = 0;
+		}
+
+		////// SORT
+		void	sort() {
+			sort(default_comp<value_type>());
+		}
+
+		template <class Compare>
+		void sort (Compare comp) {
+			listSorted(comp);
 		}
 	};
 }
