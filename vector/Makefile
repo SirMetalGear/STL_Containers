@@ -1,12 +1,12 @@
 DIR		= ./../utils
 
-SRCS	= ftList.cpp
+SRCS	= main.cpp
 
 OBJS	= ${SRCS:.cpp=.o}
 
 NAME	= a.out
 
-HEADER	= list.hpp
+HEADER	= vector.hpp
 
 CC		= clang++
 
