@@ -1,6 +1,6 @@
 DIR		= ./../utils
 
-SRCS	= main.cpp
+SRCS	= ftVector.cpp
 
 OBJS	= ${SRCS:.cpp=.o}
 

@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 14:23:05 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/14 14:26:49 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/15 17:15:03 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ public:
 		return (*this);
 	}
 	rev_iterator	operator -- (int) {
-		rev_iterator *temp = this;
+		rev_iterator temp(*this);
 		++(*this);
-		return (*temp);
+		return (temp);
 	}
 	rev_iterator	&operator ++ () {
 		pointer = pointer->_prev;
 		return (*this);
 	}
 	rev_iterator	operator ++ (int) {
-		rev_iterator *temp = this;
+		rev_iterator temp(*this);
 		--(*this);
-		return (*temp);
+		return (temp);
 	}
 	T		*operator -> () { return (&this->pointer->_data); }
 	T		&operator * () { return (this->pointer->_data); }

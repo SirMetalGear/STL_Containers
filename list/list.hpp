@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 12:12:50 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/14 17:40:39 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/16 13:43:47 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,8 +228,11 @@ namespace ft
 		list &operator = (const list &obj) {
 			if (this == &obj)
 				return (*this);
+			// if (_size)
+			// 	clear();
 			_nAlloc = obj._nAlloc;
 			_vAlloc = obj._vAlloc;
+			// _size = obj._size;
 			assign(obj.begin(), obj.end());
 			return (*this);
 		}
@@ -283,8 +286,9 @@ namespace ft
 				tmp2 = tmp2->_next;
 				_nAlloc.deallocate(tmp, 1);
 				tmp = tmp2;
-				_size--;
+				// _size--;
 			}
+			_size = 0;
 			_key->_next = _key;
 			_key->_prev = _key;
 		}
@@ -300,19 +304,19 @@ namespace ft
 		}
 
 		reference		back() { return _key->_prev->_data; }
-		
+
 		const_reference back() const { return _key->_prev->_data; }
 
 		bool			empty() const { return _size == 0; }
 
 		iterator		erase(iterator position) {
-			iterator tmp = position.pointer;
+			iterator tmp = position.pointer->_next;
 			delete_node(position.pointer);
 			return (tmp);
 		}
 
 		iterator	erase(iterator first, iterator last) {
-			iterator tmp = first.pointer;
+			iterator tmp = first.pointer->_next;
 			while (first != last)
 			{
 				tmp = first.pointer->_prev;

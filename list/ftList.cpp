@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   myListOutput.cpp                                   :+:      :+:    :+:   */
+/*   ftList.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 12:12:54 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/14 17:29:41 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/18 14:13:29 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,11 @@ void	testIterators()
 	a.push_back(25);
 	ft::list<int>::iterator	it = a.begin();
 	ft::list<int>::iterator	ite = a.end();
-	--it;
+	// --it;
 	std::cout << "PRE INCREMENT AND PRE DECREMENT CHECK\n";
 	while (it != ite)
 	{
-		std::cout << "INSIDE WHILE LOOP element of list: " << *it << std::endl;
-		++it;
+		std::cout << "INSIDE WHILE LOOP element of list: " << *it++ << std::endl;
 	}
 }
 
@@ -647,6 +646,32 @@ void		testRevIteratorMine()
 	std::cout << '\n';
 }
 
+void	testEqualOperator()
+{
+	ft::list<int> first (3, 100);      // list of 3 zero-initialized ints
+	ft::list<int> second (5, 200);     // list of 5 zero-initialized ints
+
+	second = first;
+	first = ft::list<int>();
+
+	std::cout << "Size of first: " << int (first.size()) << '\n';
+	std::cout << "Size of second: " << int (second.size()) << '\n';
+	for (ft::list<int>::iterator it = first.begin(); it != first.end(); ++it)
+		std::cout << "elem of first: " << *it << std::endl;
+	for (ft::list<int>::iterator it = second.begin(); it != second.end(); ++it)
+		std::cout << "elem of second: " << *it << std::endl;
+}
+
+void	testConstIterator()
+{
+	ft::list<int> a(5, 100);
+	ft::list<int>::const_iterator it = a.begin();
+	ft::list<int>::const_iterator it2;
+	it2 = it;
+	while (it2 != a.end())
+		std::cout << *it2++ << std::endl;
+}
+
 int	main()
 {
 	srand(time(NULL));
@@ -675,6 +700,8 @@ int	main()
 	testSwapMine();
 	testNonMemberFuncs();
 	testUniqueMine();
+	testEqualOperator();
+	testConstIterator();
 	std::string		b[5] = {"1", "2", "3", "6", "7"};
 	ft::list<std::string> a;
 	a.insert(a.end(), b, b + 3);
@@ -682,5 +709,6 @@ int	main()
 		std::cout << *item << std::endl;
 	}
 	std::cout << "TEST FINISHED!\n";
+	// while (1);
 	return (0);
 }
