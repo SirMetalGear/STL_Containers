@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 16:21:15 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/18 15:57:54 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/22 15:47:35 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void	testErase()
 		myvector.push_back(i);
 
 	// erase the 6th element
-	std::cout << "iterator pos at element: " << *myvector.erase (myvector.begin()+5) << std::endl;
+	std::cout << "iterator pos at element1: " << *myvector.erase (myvector.begin()+5) << std::endl;
 
 	std::cout << "myvector contains after erasing 6:";
 	for (unsigned i=0; i<myvector.size(); ++i)
@@ -199,11 +199,11 @@ void	testErase()
 	std::cout << '\n';
 
 	// erase the first 3 elements:
-	std::cout << "iterator pos at element: " << *myvector.erase (myvector.begin(),myvector.end()) << std::endl;
+	std::cout << "iterator pos at element2: " << *myvector.erase (myvector.begin(),myvector.end()) << std::endl;
 
 	std::cout << "myvector contains:";
-	for (unsigned i=0; i<myvector.size(); ++i)
-		std::cout << ' ' << myvector[i];
+	for (ft::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
+		std::cout << ' ' << *it;
 	std::cout << '\n';
 }
 
@@ -258,7 +258,7 @@ void iterator_test(void)
 	std::cout << *it << std::endl;
 	// it -= 2;
 	// std::cout << *it << std::endl;
-	std::cout << it[9] << std::endl;
+	// std::cout << it[9] << std::endl;
 	// std::cout << it.operator->() << std::endl;
 	// while (it != ite)
 	// {
@@ -565,6 +565,59 @@ void	testBoolMine()
 	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
 }
 
+void erase_test(void)
+{
+	ft::vector<int> my;
+	for (int i = 1; i <= 10; i++)
+		my.push_back(i);
+	std::cout << "my size: " << my.size() << std::endl;
+	ft::vector<int>::iterator it_m;
+	it_m = my.erase(my.begin() + 4);
+	std::cout << "\niterator points at: " << *it_m << std::endl;
+	std::cout << "my contains BEFORE ERASE ITERATOR:";
+	for (unsigned i = 0; i < my.size(); ++i)
+		std::cout << ' ' << my.at(i);
+	std::cout << std::endl;
+	std::cout << "erase :" << *my.erase(my.begin(), my.begin() + 3) << std::endl;
+	std::cout << "my contains AFTER ERASE ITERATOR:";
+	for (unsigned i = 0; i < my.size(); ++i)
+		std::cout << ' ' << my.at(i);
+	std::cout << std::endl;
+	std::cout << "\niterator points at AFTTER: " << *it_m << std::endl;
+	std::cout << "my size after erase: " << my.size() << std::endl;
+	std::cout << "my contains:";
+	for (unsigned i = 0; i < my.size(); ++i)
+		std::cout << ' ' << my.at(i);
+	std::cout << '\n';
+}
+
+void erase_test2(void)
+{
+	ft::vector<int> my;
+	for (int i = 1; i <= 10; i++)
+		my.push_back(i);
+	std::cout << "my new contains:";
+	for (unsigned i = 0; i < my.size(); ++i)
+		std::cout << ' ' << my.at(i);
+	std::cout << '\n';
+	std::cout << "after erase points at: " << *my.erase(my.begin(), my.begin() + 5) << std::endl;
+}
+
+void	blah()
+{
+	std::vector<int> real(3, 100);
+    std::vector<int>::iterator itr;
+    itr = real.begin();
+    itr = real.insert(itr, 200);
+    std::cout << *itr << std::endl;
+    real.insert(itr, 2, 300);
+    itr = real.begin();
+    std::vector<int> anothervector(2, 400);
+    real.insert(itr + 2, anothervector.begin(), anothervector.end());
+    int myarray[] = {501, 502, 503};
+    real.insert(real.begin(), myarray, myarray + 3);
+}
+
 int	main()
 {
 	testConstructMine();
@@ -595,6 +648,8 @@ int	main()
 	const_iterator_test();
 	std::cout << "PASSED4_______\n";
 	testBoolMine();
+	erase_test();
+	erase_test2();
 	std::cout << "TEST IS FINISHED!!\n";
 	// while(1);
 	return (0);

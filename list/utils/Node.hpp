@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 10:57:14 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/09 13:44:03 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/20 15:10:57 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ public:
 		_next = obj._next;
 		return (*this);
 	}
-	~BaseNode() { std::cout << "Node is destroyed!\n"; }
+	~BaseNode() {}
 };
 
 #endif

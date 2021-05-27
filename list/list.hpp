@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 12:12:50 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/16 13:43:47 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/26 18:59:39 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ namespace ft
 		void			delete_node(Node *position) {
 			position->_prev->_next = position->_next;
 			position->_next->_prev = position->_prev;
+			_nAlloc.destroy(position);
 			_nAlloc.deallocate(position, 1);
 			_size = _size - 1;
 			_key->_data = _size;
@@ -284,6 +285,7 @@ namespace ft
 			while (tmp != _key)
 			{
 				tmp2 = tmp2->_next;
+				_nAlloc.destroy(tmp);
 				_nAlloc.deallocate(tmp, 1);
 				tmp = tmp2;
 				// _size--;

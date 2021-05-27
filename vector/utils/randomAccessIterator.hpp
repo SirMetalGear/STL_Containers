@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 16:22:43 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/18 14:11:29 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/27 11:41:11 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ class random_iterator
 {
 public:
 	typedef typename std::ptrdiff_t	difference_type;
-    T	*pointer;
+	typedef T	value_type;
+    value_type	*pointer;
 	random_iterator() { pointer = 0; }
 	random_iterator(const random_iterator &obj) { *this = obj; }
 	random_iterator(T *obj) : pointer(obj) {}
@@ -72,9 +73,9 @@ public:
 		--(*this);
 		return (temp);
 	}
-	T		*operator -> () { return (&this->pointer); }
-	T		&operator * () { return (*this->pointer); }
-	T		&operator [] (int n) { return *(pointer + n); }
+	value_type		*operator -> () { return (&this->pointer); }
+	value_type		&operator * () const { return (*this->pointer); }
+	value_type		&operator [] (int n) { return *(pointer + n); }
 	bool	operator != (const random_iterator &obj) { return (this->pointer != obj.pointer); }
 	bool	operator == (const random_iterator &obj) { return (this->pointer == obj.pointer); }
 	bool	operator < (const random_iterator &obj) { return this->pointer < obj.pointer; }

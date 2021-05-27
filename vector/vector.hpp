@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 16:21:07 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/18 16:00:25 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/24 21:41:12 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ namespace ft
 			T *tmp = _alloc.allocate(_capacity);
 			for (size_type i = 0; i < _size; i++)
 				_alloc.construct(&tmp[i], _array[i]);
-			for (size_type i = _size; i < _capacity; i++)
-				_alloc.construct(&tmp[i], value_type());
 			for (size_type i = 0; i < prev_capacity; i++)
 				_alloc.destroy(&_array[i]);
 			_alloc.deallocate(_array, prev_capacity);
@@ -114,7 +112,7 @@ namespace ft
 			_capacity = obj._size;
 			if (obj._size == 0)
 				return *this;
-			_array = _alloc.allocate(_size);
+			_array = _alloc.allocate(_capacity);
 			for (size_type i = 0; i < _size; i++)
 				_alloc.construct(&_array[i], obj._array[i]);
 			return *this;
@@ -202,54 +200,92 @@ namespace ft
 		reference	back() { return _array[_size - 1]; }
 		const_reference back() const { return _array[_size - 1]; }
 		bool empty() const { return _size == 0; }
+		// iterator erase (iterator position) {
+		// 	if (position == end() - 1)
+		// 	{
+		// 		_alloc.destroy(&_array[_size - 1]);
+		// 		_size--;
+		// 		return (&_array[_size]);
+		// 	}
+		// 	else
+		// 	{
+		// 		size_type prev_capacity = _capacity;
+		// 		difference_type n = position - begin();
+		// 		T *tmp = _alloc.allocate(_capacity);
+		// 		size_type j = 0;
+		// 		for (size_type i = 0; i < _size; i++)
+		// 		{
+		// 			if (i != (size_type)n)
+		// 				_alloc.construct(&tmp[j++], _array[i]);
+		// 		}
+		// 		for (size_type i = 0; i < _size; i++)
+		// 			_alloc.destroy(&_array[i]);
+		// 		_alloc.deallocate(_array, prev_capacity);
+		// 		_array = tmp;
+		// 		_size--;
+		// 		return (&_array[n]);
+		// 	}
+		// }
 		iterator erase (iterator position) {
 			if (position == end() - 1)
-			{
 				_alloc.destroy(&_array[_size - 1]);
-				_size--;
-				return (&_array[_size]);
-			}
 			else
 			{
-				size_type prev_capacity = _capacity;
 				difference_type n = position - begin();
-				T *tmp = _alloc.allocate(_capacity);
-				size_type j = 0;
-				for (size_type i = 0; i < _size; i++)
+				size_type j = n;
+				while (j < _size - 1)
 				{
-					if (i != (size_type)n)
-						_alloc.construct(&tmp[j++], _array[i]);
+					_alloc.destroy(&_array[j]);
+					_alloc.construct(&_array[j], _array[j + 1]);
+					_alloc.destroy(&_array[j + 1]);
+					j++;
 				}
-				for (size_type i = 0; i < _size; i++)
-					_alloc.destroy(&_array[i]);
-				_alloc.deallocate(_array, prev_capacity);
-				_array = tmp;
-				_size--;
-				return (&_array[n]);
 			}
+			_size--;
+			return position;
 		}
+		// iterator erase (iterator first, iterator last)
+		// {
+		// 	difference_type start = first - begin();
+		// 	difference_type end = last - begin();
+		// 	if (end - start < 0)
+		// 		throw std::out_of_range("Out of range");
+		// 	if (end - start == 0)
+		// 		return first;
+		// 	T *tmp = _alloc.allocate(_capacity);
+		// 	size_type j = 0;
+		// 	for (size_type i = 0; i < _size; i++)
+		// 	{
+		// 		if ((long)i >= start && (long)i < end)
+		// 			continue ;
+		// 		_alloc.construct(&tmp[j++], _array[i]);
+		// 	}
+		// 	for (size_type i = 0; i < _size; i++)
+		// 		_alloc.destroy(&_array[i]);
+		// 	_alloc.deallocate(_array, _capacity);
+		// 	_array = tmp;
+		// 	_size -= end - start;
+		// 	return &_array[start];
+		// }
 		iterator erase (iterator first, iterator last)
 		{
 			difference_type start = first - begin();
 			difference_type end = last - begin();
-			if (end - start < 0)
+			difference_type diff = end - start;
+			if (diff < 0)
 				throw std::out_of_range("Out of range");
-			if (end - start == 0)
+			if (diff == 0)
 				return first;
-			T *tmp = _alloc.allocate(_capacity);
-			size_type j = 0;
-			for (size_type i = 0; i < _size; i++)
+			while (start != end)
+				_alloc.destroy(&_array[start++]);
+			while (start < (long)_size)
 			{
-				if ((long)i >= start && (long)i < end)
-					continue ;
-				_alloc.construct(&tmp[j++], _array[i]);
+				_alloc.construct(&_array[start - diff], _array[start]);
+				_alloc.destroy(&_array[start]);
+				start++;
 			}
-			for (size_type i = 0; i < _size; i++)
-				_alloc.destroy(&_array[i]);
-			_alloc.deallocate(_array, _capacity);
-			_array = tmp;
-			_size -= end - start;
-			return &_array[start];
+			_size -= diff;
+			return first;
 		}
 
 		reference front() { return _array[0]; }
