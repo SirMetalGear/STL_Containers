@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 12:12:54 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/26 19:00:16 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/28 23:32:01 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -709,6 +709,6 @@ int	main()
 		std::cout << *item << std::endl;
 	}
 	std::cout << "TEST FINISHED!\n";
-	while (1);
+	// while (1);
 	return (0);
 }
