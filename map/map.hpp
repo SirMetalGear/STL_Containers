@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 12:06:12 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/28 20:32:12 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/28 21:13:13 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,69 @@ namespace ft
 		}
 		value_compare value_comp() const { return value_compare(key_compare()); }
 	};
-	
+
+	template <typename Key, class T>
+	void swap (map<Key, T>& x, map<Key, T>& y) {
+		x.swap(y);
+	}
+
+	template <class InputIterator1, class InputIterator2>
+	bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
+								InputIterator2 first2, InputIterator2 last2) {
+		while (first1!=last1)
+		{
+			if (first2==last2 || first2->first < first1->first || first2->second < first1->second)
+				return false;
+			else if (first1->first < first2->first || first1->second < first2->second)
+				return true;
+			++first1;
+			++first2;
+		}
+		return (first2 != last2);
+	}
+
+	template <class T, class Alloc>
+	bool operator == (const map<T,Alloc>& lhs, const map<T,Alloc>& rhs) {
+		if (lhs.size() != rhs.size())
+			return (false);
+		typename ft::map<T, Alloc>::const_iterator it1 = lhs.begin();
+		typename ft::map<T, Alloc>::const_iterator ite1 = lhs.end();
+		typename ft::map<T, Alloc>::const_iterator it2 = rhs.begin();
+		typename ft::map<T, Alloc>::const_iterator ite2 = rhs.end();
+		while (it1 != ite1)
+		{
+			if (it1->first != it2->first || it1->second != it2->second)
+				return (false);
+			++it1;
+			++it2;
+		}
+		return (true);
+	}
+
+	template <class Key, class T>
+	bool operator != (const map<Key,T>& lhs, const map<Key,T>& rhs) {
+		return (!(lhs == rhs));
+	}
+
+	template <class Key, class T>
+	bool operator < (const map<Key,T>& lhs, const map<Key,T>& rhs) {
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
+
+	template <class Key, class T>
+	bool operator > (const map<Key,T>& lhs, const map<Key,T>& rhs) {
+		return rhs < lhs;
+	}
+
+	template <class Key, class T>
+	bool operator <= (const map<Key,T>& lhs, const map<Key,T>& rhs) {
+		return !(rhs < lhs);
+	}
+
+	template <class Key, class T>
+	bool operator >= (const map<Key,T>& lhs, const map<Key,T>& rhs) {
+		return !(lhs < rhs);
+	}
 }
 
 

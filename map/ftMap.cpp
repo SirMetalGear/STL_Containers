@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 12:04:49 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/28 20:44:29 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/28 21:09:18 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -422,6 +422,64 @@ void	reverse_iterator()
 		std::cout << rit->first << " => " << rit->second << '\n';
 }
 
+void	bool_check()
+{
+	ft::map<char, int> foo, bar, moo;
+	foo['a'] = 100;
+	foo['b'] = 1000;
+	bar['a'] = 100;
+	bar['b'] = 1000;
+	moo['a'] = 200;
+	moo['b'] = 1000;
+
+	if (foo == bar)
+		std::cout << "foo and bar are equal\n";
+	if (foo != bar)
+		std::cout << "foo and bar are not equal\n";
+	if (foo == moo)
+		std::cout << "foo and moo are equal\n";
+	if (foo != moo)
+		std::cout << "foo and moo are not equal\n";
+	if (foo < bar)
+		std::cout << "foo is less than bar\n";
+	if (foo < moo)
+		std::cout << "foo is less than moo\n";
+	if (foo > bar)
+		std::cout << "foo is greater than bar\n";
+	if (foo <= bar)
+		std::cout << "foo is less than or equal to bar\n";
+	if (foo >= bar)
+		std::cout << "foo is greater than or equal to bar\n";
+	if (foo > moo)
+		std::cout << "foo is greater than moo\n";
+	if (foo <= moo)
+		std::cout << "foo is less than or equal to moo\n";
+	if (foo >= moo)
+		std::cout << "foo is greater than or equal to moo\n";
+}
+
+void	non_member_swap()
+{
+	ft::map<char, int> foo, bar;
+
+	foo['x'] = 100;
+	foo['y'] = 200;
+
+	bar['a'] = 11;
+	bar['b'] = 22;
+	bar['c'] = 33;
+
+	ft::swap(foo, bar);
+
+	std::cout << "foo contains:\n";
+	for (ft::map<char, int>::iterator it = foo.begin(); it != foo.end(); ++it)
+		std::cout << it->first << " => " << it->second << '\n';
+
+	std::cout << "bar contains:\n";
+	for (ft::map<char, int>::iterator it = bar.begin(); it != bar.end(); ++it)
+		std::cout << it->first << " => " << it->second << '\n';
+}
+
 int		main()
 {
 	insert();
@@ -443,6 +501,8 @@ int		main()
 	value_comp();
 	construct();
 	reverse_iterator();
+	bool_check();
+	non_member_swap();
 	std::cout << "TEST IS FINISHED\n";
 	// while (1);
 	return 0;
