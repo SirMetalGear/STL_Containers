@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/24 14:16:16 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/27 12:11:50 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/28 22:27:15 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,53 @@
 #include <vector>
 #include <iostream>
 #include <list>
-void    test()
-{
-	ft::vector<int> myvector;
-	for (int i = 0; i < 10; i++)
-		myvector.push_back(i);
+// void    test()
+// {
+// 	ft::vector<int> myvector;
+// 	for (int i = 0; i < 10; i++)
+// 		myvector.push_back(i);
 
-	typedef ft::vector<int>::iterator iter_type;
-	// ? 0 1 2 3 4 5 6 7 8 9 ?
-	iter_type from(myvector.begin());				  //   ^
-													  //         ------>
-	iter_type until(myvector.end());				  //                       ^
-													  //
-	rev_random_iterator<iter_type> rev_until(from); // ^
-													  //         <------
-	rev_random_iterator<iter_type> rev_from(until); //                     ^
+// 	typedef ft::vector<int>::iterator iter_type;
+// 	// ? 0 1 2 3 4 5 6 7 8 9 ?
+// 	iter_type from(myvector.begin());				  //   ^
+// 													  //         ------>
+// 	iter_type until(myvector.end());				  //                       ^
+// 													  //
+// 	rev_random_iterator<iter_type> rev_until(from); // ^
+// 													  //         <------
+// 	rev_random_iterator<iter_type> rev_from(until); //                     ^
 
-	std::cout << "reversed begin: " << *rev_from << std::endl;
-	std::cout << "reversed end  : " << *rev_until << std::endl;
-	std::cout << "myvector:";
-	while (rev_from != rev_until)
-	{
-		std::cout << ' ' << *rev_from++;
-	}
-	std::cout << '\n';
-}
+// 	std::cout << "reversed begin: " << *rev_from << std::endl;
+// 	std::cout << "reversed end  : " << *rev_until << std::endl;
+// 	std::cout << "myvector:";
+// 	while (rev_from != rev_until)
+// 	{
+// 		std::cout << ' ' << *rev_from++;
+// 	}
+// 	std::cout << '\n';
+// }
 
-void    test2()
-{
-	std::vector<int> myvector;
-	for (int i = 0; i < 10; i++)
-		myvector.push_back(i);
+// void    test2()
+// {
+// 	std::vector<int> myvector;
+// 	for (int i = 0; i < 10; i++)
+// 		myvector.push_back(i);
 
-	typedef std::vector<int>::iterator iter_type;
-	// ? 0 1 2 3 4 5 6 7 8 9 ?
-	iter_type from(myvector.begin());				  //   ^
-													  //         ------>
-	iter_type until(myvector.end());				  //                       ^
-													  //
-	std::reverse_iterator<iter_type> rev_until(from); // ^
-													  //         <------
-	std::reverse_iterator<iter_type> rev_from(until); //                     ^
+// 	typedef std::vector<int>::iterator iter_type;
+// 	// ? 0 1 2 3 4 5 6 7 8 9 ?
+// 	iter_type from(myvector.begin());				  //   ^
+// 													  //         ------>
+// 	iter_type until(myvector.end());				  //                       ^
+// 													  //
+// 	std::reverse_iterator<iter_type> rev_until(from); // ^
+// 													  //         <------
+// 	std::reverse_iterator<iter_type> rev_from(until); //                     ^
 
-	std::cout << "myvector:";
-	while (rev_from != rev_until)
-		std::cout << ' ' << *rev_from++;
-	std::cout << '\n';
-}
+// 	std::cout << "myvector:";
+// 	while (rev_from != rev_until)
+// 		std::cout << ' ' << *rev_from++;
+// 	std::cout << '\n';
+// }
 
 int main()
 {

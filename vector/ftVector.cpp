@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 16:21:15 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/22 15:47:35 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/28 23:08:17 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,16 @@ void	capacityCheck()
 
 void	testIteratorBool()
 {
-	std::vector<int> foo;
+	ft::vector<int> foo;
 	foo.push_back(100);   // three ints with a value of 100
 	foo.push_back(100);
 	foo.push_back(100);
-	std::vector<int> bar;
+	ft::vector<int> bar;
 	bar.push_back(200);
 	bar.push_back(200);   // two ints with a value of 200
 
-	std::vector<int>::iterator it = foo.begin();
-	std::vector<int>::iterator it2 = bar.begin();
+	ft::vector<int>::iterator it = foo.begin();
+	ft::vector<int>::iterator it2 = bar.begin();
 
 	if (it==it2) std::cout << "foo and bar are equal\n";
 	if (it!=it2) std::cout << "foo and bar are not equal\n";
@@ -605,14 +605,14 @@ void erase_test2(void)
 
 void	blah()
 {
-	std::vector<int> real(3, 100);
-    std::vector<int>::iterator itr;
+	ft::vector<int> real(3, 100);
+    ft::vector<int>::iterator itr;
     itr = real.begin();
     itr = real.insert(itr, 200);
     std::cout << *itr << std::endl;
     real.insert(itr, 2, 300);
     itr = real.begin();
-    std::vector<int> anothervector(2, 400);
+    ft::vector<int> anothervector(2, 400);
     real.insert(itr + 2, anothervector.begin(), anothervector.end());
     int myarray[] = {501, 502, 503};
     real.insert(real.begin(), myarray, myarray + 3);

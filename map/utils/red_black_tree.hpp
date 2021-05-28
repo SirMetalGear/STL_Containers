@@ -6,43 +6,43 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 12:25:52 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/28 18:55:00 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/28 23:25:34 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RED_BLACK_TREE
-# define RED_BLACK_TREE
+#define RED_BLACK_TREE
 
-# include <iostream>
-# include <string>
-# include "utils.hpp"
+#include <iostream>
+#include <string>
+#include "utils.hpp"
 
-# define RED	0
-# define BLACK	1
+#define RED		0
+#define BLACK	1
 
 namespace ft
 {
 	template <typename pair>
 	struct Node
 	{
-		typedef pair		value_type;
+		typedef pair value_type;
 		value_type	val;
 		bool		color : 1;
 		Node		*left;
 		Node		*right;
 		Node		*parent;
 		Node(const value_type &_val, const bool &_color = RED,
-			Node *_left = 0, Node *_right = 0, Node *_parent = 0)
-				: val(_val), color(_color), left(_left), right(_right), parent(_parent) {}
+			 Node *_left = 0, Node *_right = 0, Node *_parent = 0)
+			: val(_val), color(_color), left(_left), right(_right), parent(_parent) {}
 	};
 
 	template <typename T1, typename T2, typename Compare = ft::less<T1>, typename Alloc = std::allocator<ft::pair<const T1, T2> > >
-	struct	tree
+	struct tree
 	{
-		typedef ft::pair<const T1, T2>	value_type;
-		typedef	Node<value_type>	Node;
-		typedef Compare				key_compare;
-		typedef typename Alloc::template rebind<Node>::other	NodeAllocator;
+		typedef ft::pair<const T1, T2> value_type;
+		typedef Node<value_type> Node;
+		typedef Compare key_compare;
+		typedef typename Alloc::template rebind<Node>::other NodeAllocator;
 		key_compare		comp;
 		NodeAllocator	alloc;
 		Node			*root;
@@ -61,7 +61,7 @@ namespace ft
 			clear();
 			delete_node(nil);
 		}
-		void	clear()
+		void clear()
 		{
 			Node *tmp = find_min();
 			Node *next;
@@ -73,13 +73,13 @@ namespace ft
 			}
 			root = nil;
 		}
-		Node*	new_node(const value_type& val)
+		Node *new_node(const value_type &val)
 		{
 			Node *nNode = alloc.allocate(1);
 			alloc.construct(nNode, val, RED);
 			return nNode;
 		}
-		void	left_rotate(Node* x)
+		void left_rotate(Node *x)
 		{
 			Node *tmp = x->right;
 			x->right = tmp->left;
@@ -95,7 +95,7 @@ namespace ft
 			x->parent = tmp;
 			tmp->left = x;
 		}
-		void	right_rotate(Node *x)
+		void right_rotate(Node *x)
 		{
 			Node *tmp = x->left;
 			x->left = tmp->right;
@@ -111,7 +111,7 @@ namespace ft
 			x->parent = tmp;
 			tmp->right = x;
 		}
-		ft::pair<Node *, bool>	insert_val(Node* &parent, Node* &current, const value_type &val)
+		ft::pair<Node *, bool> insert_val(Node *&parent, Node *&current, const value_type &val)
 		{
 			if (current == nil)
 			{
@@ -138,7 +138,7 @@ namespace ft
 			return ft::pair<Node *, bool>(current, true);
 		}
 
-		void	balance_after_insert(Node* tmp)
+		void balance_after_insert(Node *tmp)
 		{
 			while (tmp->parent->color == RED)
 			{
@@ -187,7 +187,7 @@ namespace ft
 			}
 			root->color = BLACK;
 		}
-		ft::pair<Node *, bool>	insert(const value_type& val)
+		ft::pair<Node *, bool> insert(const value_type &val)
 		{
 			ft::pair<Node *, bool> return_value = insert_val(nil, root, val);
 			if (return_value.second == false)
@@ -195,29 +195,29 @@ namespace ft
 			balance_after_insert(return_value.first);
 			return (return_value);
 		}
-		Node* find_min() const
+		Node *find_min() const
 		{
 			Node *current = root;
 			while (current->left != nil)
 				current = current->left;
 			return (current);
 		}
-		Node* find_min(Node *current)
+		Node *find_min(Node *current)
 		{
 			while (current->left != nil)
 				current = current->left;
 			return (current);
 		}
-		Node* find_max()
+		Node *find_max()
 		{
 			Node *current = root;
 			while (current->right != nil)
 				current = current->right;
 			return (current);
 		}
-		Node* end() { return nil; }
-		Node* begin() { return find_min(); }
-		Node* find_max(Node *current)
+		Node *end() { return nil; }
+		Node *begin() { return find_min(); }
+		Node *find_max(Node *current)
 		{
 			while (current->right != nil)
 				current = current->right;
@@ -255,7 +255,7 @@ namespace ft
 			}
 			return currentPosition;
 		}
-		void replace(Node* &node1, Node* &node2)
+		void replace(Node *&node1, Node *&node2)
 		{
 			if (node1->parent == nil)
 				root = node2;
@@ -265,7 +265,7 @@ namespace ft
 				node1->parent->right = node2;
 			node2->parent = node1->parent;
 		}
-		void delete_node(Node* z)
+		void delete_node(Node *z)
 		{
 			alloc.destroy(z);
 			alloc.deallocate(z, 1);
@@ -339,7 +339,7 @@ namespace ft
 			}
 			x->color = BLACK;
 		}
-		Node* getNode(Node *current, typename value_type::first_type const &key) const
+		Node *getNode(Node *current, typename value_type::first_type const &key) const
 		{
 			if (current == nil)
 				return nil;
@@ -387,7 +387,7 @@ namespace ft
 				balance_after_delete(x);
 			delete_node(z);
 		}
-		void	swap(tree &obj)
+		void swap(tree &obj)
 		{
 			Node *tmpRoot = root;
 			Node *tmpNil = nil;

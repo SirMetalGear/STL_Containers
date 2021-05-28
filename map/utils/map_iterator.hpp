@@ -6,7 +6,7 @@
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 13:27:12 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/28 20:30:00 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/28 23:22:30 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,16 @@ namespace ft
 		_Iter	iter;
 		rev_map_iterator() : iter(0) {}
 		rev_map_iterator(const _Iter &obj) : iter(obj) {}
-		rev_map_iterator(const rev_map_iterator &obj) : iter(obj.iter) {}
+		template <class _Up>
+		rev_map_iterator(const rev_map_iterator<_Up> &u) : iter(u.iter) {}
+		template <class _Up>
+		rev_map_iterator &operator=(const rev_map_iterator<_Up> &u)
+		{
+			if (this == &u)
+				return *this;
+			iter = u.iter;
+			return *this;
+		}
 		~rev_map_iterator() {}
 		rev_map_iterator	&operator = (const rev_map_iterator &obj) {
 			if (this == &obj)
@@ -232,53 +241,6 @@ namespace ft
 		}
 		bool		operator != (const rev_map_iterator &obj) { return (iter.operator!=(obj.iter)); }
 		bool		operator == (const rev_map_iterator &obj) { return (iter.operator==(obj.iter)); }
-	};
-
-	template <typename _Iter>
-	class const_rev_map_iterator
-	{
-	public:
-		_Iter	iter;
-		const_rev_map_iterator() : iter(0) {}
-		const_rev_map_iterator(const _Iter &obj) : iter(obj) {}
-		const_rev_map_iterator(const const_rev_map_iterator &obj) : iter(obj.iter) {}
-		~const_rev_map_iterator() {}
-		const_rev_map_iterator	&operator = (const const_rev_map_iterator &obj) {
-			if (this == &obj)
-				return (*this);
-			iter = obj.iter;
-			return (*this);
-		}
-		const_rev_map_iterator	&operator ++ () {
-			--iter;
-			return *this;
-		}
-		const_rev_map_iterator	operator ++ (int) {
-			const_rev_map_iterator temp(*this);
-			++(*this);
-			return (temp);
-		}
-		const_rev_map_iterator	&operator -- () {
-			++iter;
-			return *this;
-		}
-		const_rev_map_iterator	operator -- (int) {
-			const_rev_map_iterator temp(*this);
-			--(*this);
-			return (temp);
-		}
-		typename _Iter::Node::value_type const	*operator -> () {
-			_Iter tmp(iter);
-			--tmp;
-			return tmp.operator->();
-		}
-		typename _Iter::Node::value_type const	&operator * () {
-			_Iter tmp(iter);
-			--tmp;
-			return *tmp;
-		}
-		bool		operator != (const const_rev_map_iterator &obj) { return (iter.operator!=(obj.iter)); }
-		bool		operator == (const const_rev_map_iterator &obj) { return (iter.operator==(obj.iter)); }
 	};
 }
 
