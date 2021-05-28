@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   red_black_tree.cpp                                 :+:      :+:    :+:   */
+/*   red_black_tree.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlorette <mlorette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 12:25:52 by mlorette          #+#    #+#             */
-/*   Updated: 2021/05/27 12:30:46 by mlorette         ###   ########.fr       */
+/*   Updated: 2021/05/28 18:55:00 by mlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,17 @@
 
 # include <iostream>
 # include <string>
-# include "./../map/utils/utils.hpp"
+# include "utils.hpp"
 
 # define RED	0
 # define BLACK	1
 
 namespace ft
 {
-	template <typename value_type>
+	template <typename pair>
 	struct Node
 	{
+		typedef pair		value_type;
 		value_type	val;
 		bool		color : 1;
 		Node		*left;
@@ -46,12 +47,30 @@ namespace ft
 		NodeAllocator	alloc;
 		Node			*root;
 		Node			*nil;
-		tree() {
+		tree()
+		{
 			nil = alloc.allocate(1);
 			alloc.construct(nil, value_type(), BLACK);
 			nil->left = nil;
 			nil->right = nil;
 			nil->parent = nil;
+			root = nil;
+		}
+		~tree()
+		{
+			clear();
+			delete_node(nil);
+		}
+		void	clear()
+		{
+			Node *tmp = find_min();
+			Node *next;
+			while (tmp != nil)
+			{
+				next = move_forward(tmp);
+				delete_tree_element(tmp);
+				tmp = next;
+			}
 			root = nil;
 		}
 		Node*	new_node(const value_type& val)
@@ -176,7 +195,7 @@ namespace ft
 			balance_after_insert(return_value.first);
 			return (return_value);
 		}
-		Node* find_min()
+		Node* find_min() const
 		{
 			Node *current = root;
 			while (current->left != nil)
@@ -320,6 +339,17 @@ namespace ft
 			}
 			x->color = BLACK;
 		}
+		Node* getNode(Node *current, typename value_type::first_type const &key) const
+		{
+			if (current == nil)
+				return nil;
+			if (current->val.first == key)
+				return current;
+			else if (comp(key, current->val.first))
+				return getNode(current->left, key);
+			else
+				return getNode(current->right, key);
+		}
 		void delete_tree_element(Node *z)
 		{
 			Node *y = z;
@@ -356,6 +386,18 @@ namespace ft
 			if (delcol == BLACK)
 				balance_after_delete(x);
 			delete_node(z);
+		}
+		void	swap(tree &obj)
+		{
+			Node *tmpRoot = root;
+			Node *tmpNil = nil;
+			Compare tmpCompare = comp;
+			comp = obj.comp;
+			obj.comp = tmpCompare;
+			root = obj.root;
+			nil = obj.nil;
+			obj.root = tmpRoot;
+			obj.nil = tmpNil;
 		}
 	};
 }
